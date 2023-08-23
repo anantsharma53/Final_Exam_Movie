@@ -196,7 +196,7 @@ class TheaterSeats(APIView):
             theater=Theater.objects.get(id=id)
             serializer=TheaterSerializer(theater).data
             seats=(
-                Seat.object.filter(theater=id)
+                Seat.objects.filter(theater=id)
                 .order_by(
                 "seat_number",
                 )

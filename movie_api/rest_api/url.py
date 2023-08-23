@@ -14,6 +14,8 @@ urlpatterns=[
     path('movie/<int:id>/', GetMovieDetailsViews.as_view(), name='movie-detail'),
     path('movies/<int:movie_id>/add_theater/', TheaterCreateView.as_view(), name='add-theater-to-movie'),
     path('seats/', SeatView.as_view(), name='Add-seat-to-theater'),
+    path('seats/<int:id>/', SeatView.as_view(), name='update-seat-no'),
+    path('movies/theater/<int:id>/', TheaterSeats.as_view(), name='find-seat-to-the-theater'),
     
 
 ]
