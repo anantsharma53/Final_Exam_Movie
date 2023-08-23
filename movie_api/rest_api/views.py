@@ -248,7 +248,7 @@ class BookingView(APIView):
             serializer.save()
             Seat.objects.filter(id__in=seats).update(is_reserved=True)
             return Response(serializer.data,status=status.HTTP_201_CREATED)
-        return Response(serializer.error,status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     def delete(self,request,id):
         try:
             booking=Booking.objects.get(id=id,user=request.user.id)

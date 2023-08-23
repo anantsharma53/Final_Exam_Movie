@@ -16,6 +16,6 @@ urlpatterns=[
     path('seats/', SeatView.as_view(), name='Add-seat-to-theater'),
     path('seats/<int:id>/', SeatView.as_view(), name='update-seat-no'),
     path('movies/theater/<int:id>/', TheaterSeats.as_view(), name='find-seat-to-the-theater'),
-    
+    path('movies/seatbooking/', BookingView.as_view(), name='Booking-to-theater'),
 
 ]
