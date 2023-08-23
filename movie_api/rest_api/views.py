@@ -159,6 +159,7 @@ class SeatView(APIView):
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    
     def put(self,request,id=None):
         try:
             seat=Seat.objects.get(id=id)

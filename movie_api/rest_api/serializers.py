@@ -52,7 +52,7 @@ class BookingSerializer(serializers.ModelSerializer):
         }
 class BookingDetailsSerializer(serializers.ModelSerializer):
     movie=MovieSerializer()
-    seats=SeatSerializer()
+    seats=SeatSerializer(many=True)
     class Meta:
         model=Booking
         fields='__all__'
