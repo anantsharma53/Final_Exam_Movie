@@ -9,6 +9,7 @@ from django.core.paginator import Paginator
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.db.models import Sum
+from decimal import Decimal
 import json
 from .models import *
 # Create your views here.
@@ -205,7 +206,7 @@ class TheaterSeats(APIView):
             )        
             serializer["seats"]=list(seats)
             return Response(serializer,status=status.HTTP_200_OK)
-        except Movie.DoesNotExist:
+        except Theater.DoesNotExist:
             return Response({"message":"theaters not found"},status=status.HTTP_404_NOT_FOUND)
         
 class TheaterCreateView(APIView):
@@ -229,19 +230,26 @@ class BookingView(APIView):
         if id:
             try:
                 booking=Booking.objects.get(user=request.user.id, id=id)
-                serializer=BookingSerializer(booking).data
+                serializer=BookingDetailsSerializer(booking).data
                 return Response(serializer, status=status.HTTP_200_OK)
             except:
                 return Response({"message":"Booking not found"},status=status.HTTP_404_NOT_FOUND)
+        booking=Booking.objects.filter(user=request.user.id)
+        serializer=BookingDetailsSerializer(booking,many=True).data
+        return Response(serializer, status=status.HTTP_200_OK)
     def post(self,request):
-        seats=request.data.get("seat",[])
+        seats=request.data.get("seats",[])
         allSeats= Seat.objects.filter(id__in=seats)
-        is_reserved=allSeats.filter(is_reserved__in=[True]).exists()
+        print("hello",allSeats)
+        is_reserved=allSeats.filter(is_reserved__in=[True])
+        print(is_reserved)
         if is_reserved:
             return Response({"message":"seats already book"},status=status.HTTP_400_BAD_REQUEST)
         data=request.data
+        print(request.data)
         data["user"]=request.user.id
         total_price=allSeats.aggregate(sum=Sum("price"))
+        print(total_price)
         data["total_cost"]=total_price["sum"]
         serializer=BookingSerializer(data=data)
         if serializer.is_valid():
@@ -253,6 +261,7 @@ class BookingView(APIView):
         try:
             booking=Booking.objects.get(id=id,user=request.user.id)
             unreserved=booking.seats.values_list("id",flat=True)
+            booking.delete()
             Seat.objects.filter(id__in=list(unreserved)).update(is_reserved=False)
             return Response({"message":"booking canceled"},status=status.HTTP_200_OK)
         except:
