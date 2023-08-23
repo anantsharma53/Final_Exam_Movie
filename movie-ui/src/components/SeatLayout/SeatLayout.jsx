@@ -176,6 +176,8 @@ function SeatLayout(props) {
           value={selectedShowTime}
           onChange={(e) => setSelectedShowTime(e.target.value)}
           style={{ color: 'black' }}
+
+          
         >
           <option style={{ color: 'black' }} value="">Select Show Time</option>
           {showtime.first_show!== "00:00:00" ?<option style={{ color: 'black' }} value="09:00:00.000000">09:00 AM</option>: null}
@@ -184,7 +186,7 @@ function SeatLayout(props) {
         </select>
       </div>
       <div className="seat-layout">
-        <h2>Select Seat</h2>
+        <h2>Select Seatchange karna hoga code</h2>
         {/* <div className="screen">Screen</div> */}
         <div className="seats">{renderSeats()}</div>
 
