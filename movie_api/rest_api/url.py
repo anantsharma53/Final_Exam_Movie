@@ -18,6 +18,6 @@ urlpatterns=[
     path('movies/theater/<int:id>/', TheaterSeats.as_view(), name='find-seat-to-the-theater'),
     path('movies/seatbooking/', BookingView.as_view(), name='Booking-to-theater'),
     path('movies/seatbooking/<int:id>', BookingView.as_view(), name='Booking-to-theater'),
-
+# hi code
 
 ]

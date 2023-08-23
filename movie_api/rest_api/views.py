@@ -208,7 +208,7 @@ class TheaterSeats(APIView):
             return Response(serializer,status=status.HTTP_200_OK)
         except Theater.DoesNotExist:
             return Response({"message":"theaters not found"},status=status.HTTP_404_NOT_FOUND)
-        
+        # hi code
 class TheaterCreateView(APIView):
     def post(self, request, movie_id):
         print(request.data)

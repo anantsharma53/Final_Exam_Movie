@@ -39,7 +39,7 @@ class SeatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Seat
         fields = '__all__'
-
+# hi code
 
 class BookingSerializer(serializers.ModelSerializer):
     class Meta:

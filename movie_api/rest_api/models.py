@@ -70,7 +70,7 @@ class Seat(models.Model):
 
     def __str__(self):
         return f"{self.theater.name} - {self.movie.title} - Seat {self.seat_number}"
-
+# hi code
 
 class Booking(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
