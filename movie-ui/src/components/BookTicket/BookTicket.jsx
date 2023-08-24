@@ -17,7 +17,7 @@ export function BookTicket() {
                 setCinemas(data)
             })
     }, [])
-
+console.log(cinemas)
  const formatTime = (dateTimeString) => {
     const options = { hour: 'numeric', minute: 'numeric', hour12: true, timeZone: 'UTC' };
     return new Date(dateTimeString).toLocaleString('en-US', options);
