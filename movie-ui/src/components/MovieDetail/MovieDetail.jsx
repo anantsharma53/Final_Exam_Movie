@@ -31,7 +31,7 @@ export function MovieDetail() {
             fetch(`http://127.0.0.1:8000/api/theater/${id}/`)
                 .then(res => res.json())
                 .then(json => {
-                    if (json.length === 0) {
+                    if (json.theaters.length === 0) {
                         setTheaterAv(false);
                     } else {
                         setTheaterAv(true);
@@ -39,13 +39,16 @@ export function MovieDetail() {
                     }
                 })
                 .catch(error => {
+
                     console.error("Error fetching theater data:", error);
                 });
         }
+       
 
         getTheater();
     }, []);
-    console.log(theater)
+    
+    console.log(theaterAv)
     console.log(movie)
 const formatDate=(dateString)=>{
     const option={year:"numeric",month:"long",day:"numeric"};
@@ -97,7 +100,7 @@ const formatTime = (dateTimeString) => {
                                             <p>Movie Duration: {movie.movie_length}</p>
                                             <p><StarRating rating={movie.rating} /></p>
                                             <p>Rating: {movie.rating}</p>
-                                            <a href={`${movie.id}/bookticket`} className="btnBookTickets">Book Tickets</a>
+                                            <a href={`${movietheater.id}/bookticket`} className="btnBookTickets">Book Tickets</a>
                                             <Link to='/' class="btnBookTickets">Go Back or Reshedule</Link>
                                         </div>
 
@@ -107,7 +110,8 @@ const formatTime = (dateTimeString) => {
                                    
                                 </>
                             )
-                                : (<>
+                            : (<>
+
                                     <div className="box">
                                         <div className="row">
                                             <h2>Name : {movie.title}</h2>
@@ -122,7 +126,7 @@ const formatTime = (dateTimeString) => {
                                     </div>
 
                                 </>
-                                )
+                            )
                         }
 
 

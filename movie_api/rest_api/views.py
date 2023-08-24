@@ -251,6 +251,7 @@ class BookingView(APIView):
         total_price=allSeats.aggregate(sum=Sum("price"))
         print(total_price)
         data["total_cost"]=total_price["sum"]
+        
         serializer=BookingSerializer(data=data)
         if serializer.is_valid():
             serializer.save()

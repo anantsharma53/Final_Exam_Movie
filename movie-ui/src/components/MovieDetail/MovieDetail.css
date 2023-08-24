@@ -3,7 +3,12 @@
     margin: 0;
     padding: 0;
 }
+.detailMovie{
+  display: flex;
+  justify-content: space-evenly;
 
+
+}
 .detailContainer {
     display: flex;
     justify-content: center;
@@ -37,11 +42,13 @@
   }
   .big-img img{
     margin: 100px auto;
+    padding-left: 20px;
     /* width: 400px;
     height: 400px; */
     max-height: 600px; 
     /* display: block;  */
     /* object-fit: cover; */
+    box-shadow: 0 0 5px #ccc;
   }
   
   .details .box{

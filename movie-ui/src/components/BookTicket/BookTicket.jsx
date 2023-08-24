@@ -11,13 +11,17 @@ export function BookTicket() {
     
     const { id } = useParams()
     useEffect(() => {
-        fetch(`http://127.0.0.1:8000/api/movie/the/${id}`)
+        fetch(`http://127.0.0.1:8000/api/movies/theater/${id}`)
             .then((res) => res.json())
             .then((data) => {
                 setCinemas(data)
             })
     }, [])
-  
+
+ const formatTime = (dateTimeString) => {
+    const options = { hour: 'numeric', minute: 'numeric', hour12: true, timeZone: 'UTC' };
+    return new Date(dateTimeString).toLocaleString('en-US', options);
+}; 
 console.log(cinemas)
     return (
         <div className="plan"
@@ -46,7 +50,7 @@ console.log(cinemas)
                                     <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
                                 </svg>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                {cinemas.name}
+                                Screening: {cinemas.name}
                             </div>
                             
                         </div>
@@ -57,8 +61,8 @@ console.log(cinemas)
                                     className="link"
                                     to={'/movie/seatPlan/' + cinemas.id}
                                 >
-                                    <p className="time">Start Date: {cinemas.date}</p>
-                                    <p className="time">Show Time: {cinemas.first_show}, {cinemas.second_show}, {cinemas.third_show}</p>
+                                    {/* <p className="time">Start Date: {cinemas.date}</p> */}
+                                    <p className="time">Show Time: {formatTime(cinemas.movie_timing)}</p>
                                 </Link>
 
                             </div>
