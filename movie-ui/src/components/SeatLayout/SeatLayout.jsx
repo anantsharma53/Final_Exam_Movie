@@ -13,7 +13,7 @@ function SeatLayout(props) {
   const [paymentKey, setPaymentKey] = useState('');
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [seats, setSeats] = useState([]);
-  const [selectedShowTime, setSelectedShowTime] = useState();
+  const [seatboking, setSeatboking] = useState();
   const [selectedShowDate, setSelectedShowDate] = useState();
   const [reservedSeat, setReservedSeat] = useState([]);
   useEffect(() => {
@@ -71,9 +71,15 @@ function SeatLayout(props) {
     if (key) {
       // Payment successful, navigate to the success page or dashboard
       // Example: navigate('/success');
-      // In this example, I'm using the root path
-      fetch(`http://127.0.0.1:8000/api/movies/seatbooking/`, {
-
+      handleBookSeats()
+      navigate('/dashboard');
+    } else {
+      // Handle payment failure here if needed
+    }
+  };
+  const handleBookSeats = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/movies/seatbooking/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -83,26 +89,27 @@ function SeatLayout(props) {
           seats: selectedSeats.map((seat) => seat.id),
           movie: theaterdetails.movie,
         }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          // Handle the response from the server here, e.g., show a success message.
-          console.log(data);
-          navigate('/');
-          // Redirect to the dashboard after successful booking.
-          // You can use React Router for this purpose.
-          // Example: history.push('/dashboard');
-        })
-        .catch((error) => {
-          console.error("Error booking seats:", error);
-        });
-      //navigate('/');
-    } else {
-      // Handle payment failure here if needed
-    }
-
-  };
+      });
   
+      if (response.ok) {
+        const data = await response.json();
+        setSeatboking(data);
+        console.log(data);
+        
+        // Redirect to the dashboard or another page after successful booking.
+      } else {
+
+        // Handle the case where the response status is not OK (e.g., a server error).
+        console.error('Server error:', response.status);
+
+      }
+    } catch (error) {
+      // Handle any other errors that might occur.
+      console.error('Error booking seats:', error);
+    }
+  };
+
+  console.log(seatboking)
   return (
     <>
       <div>
@@ -148,3 +155,9 @@ function SeatLayout(props) {
 }
 
 export default SeatLayout;
+
+
+
+
+
+
