@@ -110,7 +110,7 @@ class GetMovieDetailsViews(APIView):
             
 class MoviesAPI(View):
     def get(self, request):
-        # Implement fetching all movies with optional filtering based on genre, language, location, and rating
+        # fetching all movies with optional filtering based on genre, language, location, and rating
         genre = request.GET.get('genre')
         language = request.GET.get('language')
         location = request.GET.get('location')
@@ -181,7 +181,7 @@ class SeatView(APIView):
             return Response({"message":"seat not found"},status=status.HTTP_404_NOT_FOUND)
         
 class TheaterView(APIView):
-    def post(self, request, movie_id):
+    def get(self, request, movie_id):
         print(request.data)
         try:
             movie = Movie.objects.get(id=movie_id)
