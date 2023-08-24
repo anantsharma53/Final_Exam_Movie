@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
 import './PaymentModal.css'
-function PaymentModal({ isOpen, onClose, onPaymentDone }) {
+import { useNavigate } from "react-router-dom";
+import Loader from './../Loader/Loader';
+function PaymentModal({ isOpen, onClose, onPaymentDone,selectedSeats, movie }) {
+    const token=localStorage.getItem('token')
     const [paymentKey, setPaymentKey] = useState('');
+    const[bookingDetails,setBookingDetails]=useState()
+    const[loaderpage,setLoader]=useState(false)
     const[cvv,setCvv]=useState();
+    const navigate = useNavigate()
     const handlePaymentDone = () => {
+
         // Simulate a payment process, and generate a payment key (you can replace this logic with actual payment integration)
-        const generatedKey = cvv; // Replace with your payment processing logic
+        const generatedKey = bookingDetails.id; // Replace with your payment processing logic
 
         // Set the payment key
         setPaymentKey(generatedKey);
@@ -13,9 +20,45 @@ function PaymentModal({ isOpen, onClose, onPaymentDone }) {
         // Notify the calling component that payment is done
         onPaymentDone(generatedKey);
     };
-
+    function handleBookSeats  () {
+        setLoader(true)
+        fetch(`http://127.0.0.1:8000/api/movies/seatbooking/`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            seats: selectedSeats.map((seat) => seat.id),
+            movie: movie,
+          }),
+        })
+          .then((response) => {
+            if (response.ok) {
+                return response.json();
+            } else {
+              throw new Error('Server error:', response.status);
+            }
+          })
+          .then((data) => {
+            setBookingDetails(data);
+            console.log(data);
+            
+            handlePaymentDone()
+            navigate('/dashboard')
+            // Redirect to the dashboard or another page after successful booking.
+          })
+          .catch((error) => {
+            // Handle any other errors that might occur.
+            console.error('Error booking seats:', error);
+          });
+      };
+    
     return (
-        <div className={`modal ${isOpen ? 'open' : ''}`}>
+        <>
+        {loaderpage ? <Loader/> 
+        :(
+            <div className={`modal ${isOpen ? 'open' : ''}`}>
             <div className="modal-content">
                 
                             <div class="card rounded-3">
@@ -86,15 +129,16 @@ function PaymentModal({ isOpen, onClose, onPaymentDone }) {
                                         </div>
 
                                         {/* <button class="btn btn-success btn-lg btn-block">Add card</button> */}
-                                        {cvv?<button class="btn btn-success btn-lg btn-block" onClick={handlePaymentDone}>Confirm Payment</button>:
-                                        <button class="btn btn-success btn-lg btn-block" disabled>Confirm Payment</button>}
+                                        {cvv?<button class="btn btn-success btn-lg btn-block" onClick={handleBookSeats}>Confirm Payment</button>:
+                                        <button class="btn btn-success btn-lg btn-block"onClick={handlePaymentDone} disabled>Cancel</button>}
 
                                         <button class="btn btn-success btn-lg btn-block" onClick={onClose}>Cancel</button>
                                     </form>
                                 </div>
                             </div>                      
             </div>
-        </div>
+        </div>)}
+        </>
     );
 }
 
