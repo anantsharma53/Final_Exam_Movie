@@ -68,11 +68,12 @@ const formatTime = (dateTimeString) => {
                 backgroundPosition: 'center',
                 // Adjust the background position as needed
             }}>
-                <div className="detailsbox">
-                    <div className="details" >
-                        <div className="big-img">
+                <div className="big-img">
                             <img src={movie.image} alt="" />
                         </div>
+                <div className="detailsbox">
+                    <div className="details" >
+                        
                         {
                             theaterAv ? (
                                 <>
